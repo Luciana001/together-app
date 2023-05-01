@@ -28,4 +28,9 @@ class Activity extends Model
     {
         return $this->hasMany(ImagesActivity::class);
     }
+
+    public function notes()
+    {
+        return $this->hasMany(NoteUser::class);
+    }
 }

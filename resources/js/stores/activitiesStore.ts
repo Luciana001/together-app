@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useLocationStore } from './locationStore';
 
-export const useActivityStore = defineStore({
+export const useActivitiesStore = defineStore({
     id: 'activity',
     //state = donnees
     state: () => ({
@@ -20,6 +20,9 @@ export const useActivityStore = defineStore({
         async fetchActivities() {
             const locationStore = useLocationStore();
             const { latitude, longitude } = locationStore.position.coords;
+            //console.log(latitude)
+
+            if(!latitude || !longitude) return;
 
             const response = await axios.get('/api/activities', {
                 params: {

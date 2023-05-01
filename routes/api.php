@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ActivitiesController;
+use App\Http\Controllers\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/activities', [ActivitiesController::class, 'getActivitiesWithDistance'])
     ->name('activities');
+
+Route::get('/categories', [CategoriesController::class, 'index']);
+

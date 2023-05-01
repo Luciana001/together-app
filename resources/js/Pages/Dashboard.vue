@@ -1,43 +1,93 @@
 <script setup>
-    import { computed, defineProps, onMounted } from 'vue';
-    import AppLayout from '@/Layouts/AppLayout.vue';
-    import Welcome from '../components/Welcome.vue';
-    import { locationStore } from "../stores/locationStore";
-    import { activitiesStore } from "../stores/activitiesStore"
+import { computed, defineProps, onMounted, ref } from "vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import ListCategories from '../components/ListCategories.vue';
+import HamburgerMenu from "../components/HamburgerMenu.vue";
+import FormSearch from "../components/FormSearch.vue";
+import ArrowRight from "../components/ArrowRight.vue";
+import SectionCardFloat from "../components/SectionCardFloat.vue";
+import { useLocationStore } from "@/stores/locationStore";
+import { useActivitiesStore } from "@/stores/activitiesStore";
+import axios from "axios";
 
-    // const props = defineProps({
-    //     activities: Array,
-    // });
-    // console.table(props.activities)
-    async function fetchActivities() {
-        await locationStore.fetchPosition();
-        await activitiesStore.fetchActivities();
-    }
+// ---------- Activités ----------
+// Recuperer par le biais des stores les activites en fonction de la distance 
+// qui les sépare de la position actuelle de l'utilisateur
 
-    onMounted(fetchActivities);
+const locationStore = useLocationStore();
+const activitiesStore = useActivitiesStore();
 
-    const nearesActivities = computed(() => activitiesStore.getActivitiesSortedByDistance);
-    const nextActivities = computed(() => activitiesStore.getActivitiesSorted>ByDate);
+async function fetchActivities() {
+    await locationStore.fetchPosition();
+    await activitiesStore.fetchActivities();
+}
 
-    console.table(nearesActivities)
+// Récupérer la liste des catégories
+let categories = ref([])
+onMounted(() => {
+    fetchActivities();
+    axios.get('/api/categories')
+        .then(response => categories.value = response.data)
+        .catch(error => console.log(error));
+});
+
+// Trier les activités par distance croissante et par date
+const nearesActivities = computed(
+    () => activitiesStore.getActivitiesSortedByDistance
+);
+const nextActivities = computed(
+    () => activitiesStore.getActivitiesSortedByDate
+);
+//console.table(nearesActivities)
+
+
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
-        </template>
+    <AppLayout title="Dashboard" class="bg-gradient-to-b from-teal to-cyan">
+        <!-- Navbar -->
+        <template #nav>
+            <div class="mx-auto px-4">
+                <div class="flex justify-between ">
+                    <div class="bg-transparent pt-10">
+                        <h1 class="text-blue-50 font-extrabold text-4xl pl-2">
+                            <a :href="route('dashboard')">Together</a>
+                        </h1>
+                    </div>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome :nearesActivities="nearesActivities" :nextActivities="nextActivities"/> 
-                    
-                    
+
+                    <HamburgerMenu />
                 </div>
             </div>
-        </div>
+        </template>
+
+        <template #header>
+            <!-- Formulaire de recherche -->
+            <div class="mx-auto px-4">
+                <!-- Search Activities by name, filter, map-->
+                <FormSearch />
+
+                <!-- Liste des catégories -->
+                <div class="relative">
+                    <div class=" overflow-auto flex ">
+                        <ul v-for="categorie in categories" class="mx-2">
+                            <ListCategories :data="categorie" />
+                        </ul>
+                        <!-- Fleches droite -->
+                        <ArrowRight class="p-2 h-8 w-8 top-4 right-0" />
+                    </div>
+                </div>
+            </div>
+
+        </template>
+
+        <template #main>
+            <!-- Activités triées par distance -->
+            <SectionCardFloat title="Activités à proximité" :data="nearesActivities" />
+
+            <!-- Activités triées par date -->
+            <SectionCardFloat title="Activités à venir" :data="nextActivities" />
+        </template>
+
     </AppLayout>
 </template>

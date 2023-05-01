@@ -2,34 +2,40 @@
 
 namespace App\Http\Controllers;
 use  App\Models\Activity;
+use  App\Models\NoteUser;
 use Inertia\Inertia;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ActivitiesController extends Controller
 {
-    // Liste des activités
-    // public function index () {
-    //     $activities = Activity::select('*', 'activities.title as activityTitle',
-    //         'users.name as userName', 'activities.id as activityId', 'users.id as userId')
-    //         ->join('users', 'activities.user_id', '=','users.id')->get();
-
-    //     return Inertia::render('Dashboard',[
-    //         'activities' => $activities
-    //     ]);
-    // }
-
-    // Détail d'une activité
     public function show ($id)
     {
-        $activity = Activity::select('*', 'activities.title as activityTitle',
-        'users.name as userName', 'activities.id as activityId', 'users.id as userId')
-        ->join('users', 'activities.user_id', '=','users.id')
+        // Recuperez la distance envoyé par l'url et ajouter un champ 'distance' à l'activity
+        $distance = request()->query('distance');
+
+        //recuperer le nb max de participants de l'activité pour limiter le resultat des participants 
+        $nb_max_participants = Activity::where('id','=', $id)
+                    ->value('nb_max_participants');
+
+        //Récupérez l'activité avec les liaisons aux autres tables 
+        // (users, categories, images_activities, note_users, users -> limité au nb max de participants)
+        
+        $activity = Activity::with(['user', 'category', 'images','users'])
         ->where('activities.id', '=', $id)
+        ->join('note_users', 'activities.user_id', '=', 'note_users.user_id')
+        ->join('users_has_activities', 'activities.id', '=', 'users_has_activities.activity_id')
+        ->select('activities.*', DB::raw('AVG(note_users.note) as average'))
+        ->groupBy('activities.id')
+        ->with(['users' => function($query) use ($nb_max_participants) {
+            $query->take($nb_max_participants);
+        }])
         ->get();
 
         return Inertia::render('ShowActivity', [
-            'activity' => $activity
+            'activity' => $activity,
+            'distance' => $distance
         ]);
     }
 
@@ -37,24 +43,46 @@ class ActivitiesController extends Controller
     {
 
         // Récupérez la position du user depuis la requête
-            $userLatitude = $request->input('');
-            $userLongitude = $request->input('');
+            $userLatitude = $request->input('latitude');
+            $userLongitude = $request->input('longitude');
             $userRadius = $request->input('radius') | 100;
 
-        //Récupérez les activités avec les liaisons aux autres tables
-        $activities = Activity::with('user')->get();
+        //Récupérez les activités avec les liaisons aux autres tables (users, categories, images_activities, note_users)
+        $activities = Activity::with(['user','category','images'])
+        ->join('note_users', 'activities.user_id', '=', 'note_users.user_id')
+        ->select('activities.*', DB::raw('AVG(note_users.note) as average'))
+        ->groupBy('activities.id')
+        ->get();
 
         // Parcourez les activités et ajouter un champ distance à chaque activity
         foreach($activities as $activity){
-            $activity->distance = $this.calcDistance(
+            $activity->distance = $this->calcDistance(
                 $userLatitude,
                 $userLongitude,
                 $activity->latitude,
                 $activity->longitude,
             );
+            //$activity->note = averageNotes($activity->user_id);
+            
         }
     
-        return response()->json($activities->values->where('distance', '<', $radius)->all());
+        return response()->json(
+            $activities->values()->where('distance', '<', $userRadius)->all()
+        );
+    }
+
+    public function averageNotes($id) {
+        //Recupérez la moyenne des notes par user
+        $averages = NoteUser::select('user_id', DB::raw('AVG(note) as average'))
+                    ->groupBy('user_id')
+                    ->get();
+        
+        foreach ($averages as $average) {
+            if ($average->user_id == $id) {
+                return $average->average;
+            }
+        }
+        return null;
     }
 
     public function calcDistance($activityLatitude, $activityLongitude, $userLatitude, $userLongitude) 
@@ -67,7 +95,8 @@ class ActivitiesController extends Controller
         $a = sin($dLat/2) * sin($dLat/2) + sin($dLon/2) * sin($dLon/2) * cos($activityLatitude) * cos($userLatitude);
         $c = 2 * atan2(sqrt($a), sqrt(1-$a));
         $distance = $earthRadiusKm * $c;
-        return $distance;
+
+        return round($distance, 2);
     }
     
 }

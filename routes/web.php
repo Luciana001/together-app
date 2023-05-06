@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ActivitiesController;
+use App\Http\Controllers\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +35,18 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/activities/{id}', [ActivitiesController::class, 'show'])
-            ->name('activities.show');
+    Route::resource('/activities', ActivitiesController::class);
 
-    Route::get('/addForm', function () {
-        return Inertia::render('AddForm');
-    })->name('addForm');
+    Route::get('/categories', [CategoriesController::class, 'index']);
+
+    // Route::get('/activities/{id}', [ActivitiesController::class, 'show'])
+    //         ->name('activities.show');
+
+    // Route::get('/addForm', function () {
+    //     return Inertia::render('AddForm');
+    // })->name('addForm');
+
+    // Route::post('/activities', [ActivitiesController::class, 'store'])
+    //     ->name('activities.store');
 
 });

@@ -11,7 +11,7 @@ const props = defineProps({
 
 <template>
     <a :href="props.route">
-        <img :src="`./img/icon/${props.src}`" alt="" :class="props.class">
+        <img :src="`/img/icon/${props.src}`" alt="" :class="props.class">
     </a>
 </template>
 

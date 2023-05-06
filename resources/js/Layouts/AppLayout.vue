@@ -35,6 +35,7 @@ const props = defineProps({
             <header v-if="$slots.header" class="">
                 <div class="">
                     <slot name="header" />
+                    
                 </div>
             </header>
 
@@ -46,10 +47,10 @@ const props = defineProps({
 
             <footer class="relative bg-blue-50 bottom-0 left-0 right-0 h-12">
                 <div class=" grid grid-cols-4 grid-rows-1 border-gray-900 ">
-                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" icon="home"/>
-                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" icon="user_border"/>
-                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" icon="bookmark"/>
-                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" icon="settings"/>
+                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" src="home.png"/>
+                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" src="user_border.png"/>
+                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" src="bookmark.png"/>
+                    <LinkIcon :route="route('dashboard')" class="h-4 w-4 my-4 mx-auto" src="settings.png"/>
                 </div>  
             </footer>
         </div>

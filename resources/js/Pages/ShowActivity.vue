@@ -3,7 +3,7 @@ import { defineProps } from 'vue';
 import {format} from "date-fns";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Icon from '../components/Icon.vue';
-import LinkIcon from '../components/LinkIcon.vue';
+import SecondaryNavigation from '../components/SecondaryNavigation.vue';
 import BtnPrimary from '../components/BtnPrimary.vue';
 import ImgRounded from '../components/ImgRounded.vue';
 import LocalisationDistance from '../components/LocalisationDistance.vue';
@@ -23,8 +23,7 @@ function formatHeure(heure){
     let [hours, minutes, seconds] = heure.split(':')
     return `${hours}h${minutes}`
 }
-console.table(props.activity)
-console.log(props.distance)
+
 </script>
 
 <template>
@@ -32,15 +31,8 @@ console.log(props.distance)
 
         <template #nav>
             <!-- Navigation -->
-            <div class="absolute top-0 left-0 right-0 z-50">
-                <div class="flex justify-between opacity-50 bg-gray-700">
-                    <LinkIcon icon="fleche.png" :route="route('dashboard')" class="pl-4 pt-4"/>
-                    <div class="flex gap-4 mr-5">
-                        <LinkIcon icon="signet.png" :route="route('dashboard')" class="p-2 my-3 w-8 h-8 bg-blue-50 rounded-full" />
-                        <LinkIcon icon="editer.png" :route="route('dashboard')" class="p-2 my-3 w-8 h-8 bg-blue-50 rounded-full" />
-                    </div>
-                </div>
-            </div>
+            <SecondaryNavigation class="bg-teal"/>
+            
         </template>
 
         <template #header>

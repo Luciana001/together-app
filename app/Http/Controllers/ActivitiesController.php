@@ -10,12 +10,87 @@ use Illuminate\Support\Facades\DB;
 
 class ActivitiesController extends Controller
 {
-    public function show ($id)
+    /**
+     * Display a listing of the resource.
+     */
+    public function getActivitiesWithDistance(Request $request)
     {
-        // Recuperez la distance envoyé par l'url et ajouter un champ 'distance' à l'activity
+        // Récupérez la position du user depuis la requête
+        $userLatitude = $request->input('latitude');
+        $userLongitude = $request->input('longitude');
+        $userRadius = $request->input('radius') | 100;
+
+        //Récupérez les activités avec les liaisons aux autres tables (users, categories, images_activities, note_users)
+        $activities = Activity::with(['user','category','images'])
+        ->join('note_users', 'activities.user_id', '=', 'note_users.user_id')
+        ->select('activities.*', DB::raw('AVG(note_users.note) as average'))
+        ->groupBy('activities.id')
+        ->get();
+
+        // Parcourez les activités et ajouter un champ distance à chaque activity
+        foreach($activities as $activity){
+            $activity->distance = $this->calcDistance(
+                $userLatitude,
+                $userLongitude,
+                $activity->latitude,
+                $activity->longitude,
+            );
+         //$activity->note = averageNotes($activity->user_id)
+        }
+
+        return response()->json(
+            $activities->values()->where('distance', '<', $userRadius)->all()
+        );
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('AddForm');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // Validation
+        $validated = $request->validate([
+            'title'               => 'required|max:255',
+            'localisation'        => 'required|max:255',
+            'date_activity'       => 'required',
+            'hour'                => 'required',
+            'duration'            => 'required',
+            'description'         => 'alpha_num',
+            'nb_max_participants' => 'integer',
+            'user_id'             => 'integer',
+            'category_id'         => 'integer',
+            "adress"              => 'required|max:255',
+            "pays"                => 'required|max:255',
+            'image'               => 'image|mimes:jpg,gif,png',
+        ]);
+
+        // Upload de l'image 
+        $path = explode('img/activities/', $request->file('image')->store('images'));
+
+        $validated['image'] = $path[1];
+        Activity::create($validated);
+
+
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        // Recuperez la distance envoyé par l'url 
         $distance = request()->query('distance');
 
-        //recuperer le nb max de participants de l'activité pour limiter le resultat des participants 
+        //A cause des données fictives -> recuperer le nb max de participants de l'activité pour limiter le resultat des participants 
         $nb_max_participants = Activity::where('id','=', $id)
                     ->value('nb_max_participants');
 
@@ -39,36 +114,28 @@ class ActivitiesController extends Controller
         ]);
     }
 
-    public function getActivitiesWithDistance(Request $request) 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
+        //
+    }
 
-        // Récupérez la position du user depuis la requête
-            $userLatitude = $request->input('latitude');
-            $userLongitude = $request->input('longitude');
-            $userRadius = $request->input('radius') | 100;
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
 
-        //Récupérez les activités avec les liaisons aux autres tables (users, categories, images_activities, note_users)
-        $activities = Activity::with(['user','category','images'])
-        ->join('note_users', 'activities.user_id', '=', 'note_users.user_id')
-        ->select('activities.*', DB::raw('AVG(note_users.note) as average'))
-        ->groupBy('activities.id')
-        ->get();
-
-        // Parcourez les activités et ajouter un champ distance à chaque activity
-        foreach($activities as $activity){
-            $activity->distance = $this->calcDistance(
-                $userLatitude,
-                $userLongitude,
-                $activity->latitude,
-                $activity->longitude,
-            );
-            //$activity->note = averageNotes($activity->user_id);
-            
-        }
-    
-        return response()->json(
-            $activities->values()->where('distance', '<', $userRadius)->all()
-        );
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 
     public function averageNotes($id) {
@@ -98,5 +165,4 @@ class ActivitiesController extends Controller
 
         return round($distance, 2);
     }
-    
 }

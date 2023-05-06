@@ -41,7 +41,7 @@ const logout = () => {
                 <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     Together
                 </ResponsiveNavLink>
-                <ResponsiveNavLink :href="route('addForm')" :active="route().current('addForm')">
+                <ResponsiveNavLink :href="route('activities.create')" :active="route().current('addForm')">
                     Add new activity
                 </ResponsiveNavLink>
             </div>

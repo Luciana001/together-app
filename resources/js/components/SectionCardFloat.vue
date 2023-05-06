@@ -2,6 +2,7 @@
 import { defineProps } from 'vue';
 import CardActivity from "./cardActivity.vue";
 import ArrowRight from "./ArrowRight.vue";
+import TitleSection from './TitleSection.vue';
 
 const props = defineProps({
     title: String,
@@ -11,7 +12,8 @@ const props = defineProps({
 
 <template>
     <section class="py-6 relative">
-        <h2 class="font-extrabold text-blue-50 py-6 text-xl">{{ props.title }}</h2>
+        <TitleSection class="font-extrabold text-blue-50 py-6 text-xl" :value="props.title"/>
+        <!-- <h2 class="font-extrabold text-blue-50 py-6 text-xl">{{ props.title }}</h2> -->
             <div class="overflow-auto flex">
                 <!-- Card activity -->
                 <article v-for="activity in props.data" class="mr-1">

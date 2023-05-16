@@ -22,5 +22,4 @@ export const useLocationStore = defineStore({
             this.position = position;
         },
     },
-    // return { location, fetchPosition };
 });

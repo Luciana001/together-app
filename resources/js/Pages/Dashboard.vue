@@ -11,12 +11,14 @@ import { useActivitiesStore } from "@/stores/activitiesStore";
 import axios from "axios";
 
 // ---------- Activités ----------
-// Recuperer par le biais des stores les activites en fonction de la distance 
-// qui les sépare de la position actuelle de l'utilisateur
+// Recuperer par le biais des stores les activites en fonction de:
+// de la distance qui les séparent
+// de la position actuelle de l'utilisateur
 
 const locationStore = useLocationStore();
 const activitiesStore = useActivitiesStore();
 
+// récupérer la position actuelle de l'utilisateur et les activités triées par distance et par date
 async function fetchActivities() {
     await locationStore.fetchPosition();
     await activitiesStore.fetchActivities();
@@ -31,15 +33,15 @@ onMounted(() => {
         .catch(error => console.log(error));
 });
 
-// Trier les activités par distance croissante et par date
+// Insérer les activités triées par distance croissante et par date dans nearesActivities
 const nearesActivities = computed(
     () => activitiesStore.getActivitiesSortedByDistance
 );
+
+// Insérer les activités triées par date dans nextActivities
 const nextActivities = computed(
     () => activitiesStore.getActivitiesSortedByDate
 );
-//console.table(nearesActivities)
-
 
 </script>
 
@@ -69,7 +71,7 @@ const nextActivities = computed(
 
                 <!-- Liste des catégories -->
                 <div class="relative">
-                    <div class=" overflow-auto flex ">
+                    <div class=" overflow-auto flex -mx-8 px-8">
                         <ul v-for="categorie in categories" class="mx-2">
                             <ListCategories :data="categorie" />
                         </ul>

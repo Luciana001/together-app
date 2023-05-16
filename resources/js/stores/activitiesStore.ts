@@ -20,11 +20,10 @@ export const useActivitiesStore = defineStore({
         async fetchActivities() {
             const locationStore = useLocationStore();
             const { latitude, longitude } = locationStore.position.coords;
-            //console.log(latitude)
 
             if(!latitude || !longitude) return;
 
-            const response = await axios.get('/api/activities', {
+            const response = await axios.get('/api/activitiesByDistance', {
                 params: {
                     latitude,
                     longitude,

@@ -10,6 +10,7 @@ import LinkUser from "./LinkUser.vue";
 const props = defineProps({
     data: Array,
 });
+console.table(props.data);
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -22,9 +23,9 @@ function formatDate(dateString) {
     <div class="w-60 shadow-gray-600 shadow-md m-1 rounded-lg">
         <!-- header => img -->
         <div class="relative flex items-center h-40 overflow-hidden rounded-t-lg font-bold text-cyan-800">
-            <img :src="`./img/activites/${props.data.images[0].name}`" alt="" class="object-cover" />
+            <img :src="`./img/activites/${props.data.image}`" alt="" class="object-cover" />
             <a href="" class="absolute top-4 left-4 bg-blue-50 py-1 px-2 rounded-lg">
-                {{ props.data.category.name }}
+                {{ props.data.name_category }}
             </a>
             <div class="absolute top-4 right-4  bg-blue-50 rounded-full">
                 <icon :src="`./img/icon/bookmark.png`" />
@@ -46,11 +47,11 @@ function formatDate(dateString) {
             <!-- organisateur -->
             <div class="flex py-0.5 text-blue-50">
                 <Icon :src="`./img/icon/utilisateur.png`"/>
-                <LinkUser :value="props.data.user.name"/>
+                <LinkUser :value="props.data.name_user"/>
 
                 <!-- Notes utilisateurs -->
-                <Icon v-for="i in Math.min(props.data.average, 5)" :src="`./img/icon/star.png`" :key="i"/>
-                <Icon v-for="i in 5 - props.data.average" :src="`./img/icon/starWhite.png`" :key="i"/>
+                <Icon v-for="i in Math.min(props.data.avg_note, 5)" :src="`./img/icon/star.png`" :key="i"/>
+                <Icon v-for="i in 5 - props.data.avg_note" :src="`./img/icon/starWhite.png`" :key="i"/>
             </div>
 
             <!-- participants -->

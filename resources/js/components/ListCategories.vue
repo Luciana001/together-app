@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
     <!-- Liste des catégories -->
-    <li class="inline-block shadow-gray-600 shadow-xl rounded-full w-16 h-16">
+    <li class="inline-block shadow-gray-600 shadow-xl rounded-full w-16 h-16 ">
         <a href="">
             <img :src="`./img/categories/${data.image}`" alt="" class="w-full h-full object-cover rounded-full" />
             <span class="font-medium text-sm text-blue-50">{{

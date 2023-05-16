@@ -21,8 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/activities', [ActivitiesController::class, 'getActivitiesWithDistance'])
-    ->name('activities');
+Route::get('/activitiesByDistance', [ActivitiesController::class, 'getActivitiesWithDistance'])
+    ->name('dashboard');
 
-Route::get('/categories', [CategoriesController::class, 'index']);
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
 
+//Route::resource('/activities', ActivitiesController::class);
+
+Route::post('/activities', [ActivitiesController::class, 'store'])->name('activities.store');

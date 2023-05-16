@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from 'vue';
-import CardActivity from "./cardActivity.vue";
+import CardActivity from  "./CardActivity.vue";
 import ArrowRight from "./ArrowRight.vue";
 import TitleSection from './TitleSection.vue';
 
@@ -17,6 +17,7 @@ const props = defineProps({
             <div class="overflow-auto flex">
                 <!-- Card activity -->
                 <article v-for="activity in props.data" class="mr-1">
+                    
                     <CardActivity :data="activity" />
                 </article>
             </div>

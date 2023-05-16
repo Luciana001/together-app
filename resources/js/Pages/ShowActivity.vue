@@ -23,7 +23,7 @@ function formatHeure(heure){
     let [hours, minutes, seconds] = heure.split(':')
     return `${hours}h${minutes}`
 }
-
+console.table(props.activity)
 </script>
 
 <template>
@@ -37,7 +37,7 @@ function formatHeure(heure){
 
         <template #header>
             <div class="relative h-96">
-                <img :src="`../../img/activites/${props.activity[0].images[0].name}`" alt="" class="object-cover h-96 w-full">
+                <img :src="`../../img/activites/${props.activity[0].image_activity}`" alt="" class="object-cover h-96 w-full">
 
                 <!-- Infos of activity -->
                 <!-- Title -->
@@ -56,7 +56,7 @@ function formatHeure(heure){
                         {{ formatDate(props.activity[0].date_activity) }}
                     </span>
                     <a href="" class=" bg-blue-50 text-cyan-800 font-extrabold py-1 px-2 rounded-lg">
-                        {{ props.activity[0].category.name }}
+                        {{ props.activity[0].name_category }}
                     </a>
                 </div>
             </div>
@@ -91,22 +91,24 @@ function formatHeure(heure){
                 <section class=" mt-12 text-blue-50 font-medium">
                     <span class="">Organisé par</span>
 
-                    <ImgRounded :src="`../../img/users/${props.activity[0].user.profile_photo_path}`" class="w-16 h-16"/>
-                    <LinkUser :value="props.activity[0].user.name"/>
+                    <ImgRounded :src="`../../img/users/${props.activity[0].image_user}`" class="w-16 h-16"/>
+                    <LinkUser :value="props.activity[0].name_user"/>
 
                     <!-- Notes utilisateurs -->
                     <div class="flex gap-1 mb-12">
                         
-                        <Icon v-for="i in Math.min(props.activity[0].average, 5)" :src="`../../img/icon/star.png`" :key="i"/>
-                        <Icon v-for="i in 5 - props.activity[0].average" :src="`../../img/icon/starWhite.png`" :key="i"/>
+                        <Icon v-for="i in Math.min(props.activity[0].avg_note, 5)" :src="`../../img/icon/star.png`" :key="i"/>
+                        <Icon v-for="i in 5 - props.activity[0].avg_note" :src="`../../img/icon/starWhite.png`" :key="i"/>
                     </div>
 
+                
                     <!-- Nb de participants inscris sur le nombre de participants acceptés -->
-                    <span class="font-normal">{{props.activity[0].users.length}}/{{props.activity[0].nb_max_participants}} participants</span>
+                    <span class="font-normal">{{props.activity.participants.length}}/{{props.activity[0].nb_max_participants}} participants</span>
 
                     <div class="grid grid-cols-6 grid-flow-row">
-                        <div v-for="user in props.activity[0].users" class="inline-block ">
-                            <ImgRounded :src="`../../img/users/${user.profile_photo_path}`" class="w-12 h-12"/>                         
+                        <div v-for="user in props.activity.participants" class="inline-block ">
+                            
+                            <ImgRounded :src="`../../img/users/${user['profile_photo_path']}`" class="w-12 h-12"/>                         
                         </div>
                         
                     </div>

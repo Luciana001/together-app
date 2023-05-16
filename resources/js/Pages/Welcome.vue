@@ -12,11 +12,11 @@ defineProps({
 <template>
     <Head title="Welcome"/>
 
-    <div class=" h-full text-blue-50 text-center align-middle font-semibold">
-        <h1 class=" text-3xl font-bold pb-3 ">
+    <div class="text-blue-50 text-center font-semibold bg-teal py-80">
+        <h1 class=" text-3xl font-bold pb-3 w-full">
             <a href="index.html">Together</a>
-        </H1>
-        <div v-if="canLogin" class="sm:flex sm:justify-center sm:items-center">
+        </h1>
+        <div v-if="canLogin" class="">
             <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="hover:text-gray-600 ">Dashboard</Link>
 
             <template v-else>

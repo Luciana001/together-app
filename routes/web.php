@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\ActivitiesController;
 use App\Http\Controllers\CategoriesController;
@@ -30,23 +31,16 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    //Route pour les users connectés
+    //----- Routes pour les users connectés ------
+
+    // Page d'accueil 
     Route::get('/dashboard', function(){
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    //Route::get('/dashboard', [ActivitiesController::class, 'getActivitiesWithDistance'])->name('dashboard');
 
+    // CRUD pour les activités
     Route::resource('/activities', ActivitiesController::class);
 
-    Route::get('/categories', [CategoriesController::class, 'index']);
-
-    // Route::get('/activities/{id}', [ActivitiesController::class, 'show'])
-    //         ->name('activities.show');
-
-    // Route::get('/addForm', function () {
-    //     return Inertia::render('AddForm');
-    // })->name('addForm');
-
-    // Route::post('/activities', [ActivitiesController::class, 'store'])
-    //     ->name('activities.store');
 
 });

@@ -18,7 +18,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div>
+    <div class="overflow-hidden">
 
         <Head :title="title" />
 

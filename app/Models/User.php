@@ -84,9 +84,12 @@ class User extends Authenticatable
         return $this->hasMany(NoteUser::class);
     }
 
-    public function notesActivity()
+    
+
+    public static function getAuthenticatedUserId()
     {
-        return $this->hasMany(NoteActivity::class);
+        $user = auth()->user();
+        return $user ? $user->id : null;
     }
 
     

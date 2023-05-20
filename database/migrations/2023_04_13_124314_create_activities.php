@@ -23,6 +23,10 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
+            $table->decimal('latitude');
+            $table->decimal('longitude');
+            $table->string('adress');
+            $table->string('pays');
         });
     }
 

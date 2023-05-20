@@ -59,33 +59,38 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    // users qui se suivent entre eux
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_has_users', 'follower_id', 'following_id');
     }
 
+    // categories choisies par le user dans son profil
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'users_has_categories', 'user_id', 'category_id');
     }
 
+    // users qui participent aux activités
     public function activities()
     {
         return $this->belongsToMany(Activity::class, 'users_has_activities', 'user_id', 'activity_id');
     }
 
-    public function activities_organizer()
+    // user qui organise l'activité
+    public function ogranisateur()
     {
         return $this->hasMany(Activity::class);
     }
 
+    // notes par utilisateur
     public function notesUser()
     {
         return $this->hasMany(NoteUser::class);
     }
 
     
-
+    // récupérer l'id du user dont la session est en cours
     public static function getAuthenticatedUserId()
     {
         $user = auth()->user();

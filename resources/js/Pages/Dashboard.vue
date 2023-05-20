@@ -11,14 +11,13 @@ import { useActivitiesStore } from "@/stores/activitiesStore";
 import axios from "axios";
 
 // ---------- Activités ----------
-// Recuperer par le biais des stores les activites en fonction de:
-// de la distance qui les séparent
-// de la position actuelle de l'utilisateur
 
 const locationStore = useLocationStore();
 const activitiesStore = useActivitiesStore();
 
-// récupérer la position actuelle de l'utilisateur et les activités triées par distance et par date
+// Recuperer par le biais des stores les activites en fonction de:
+// - les activités trièes par distance et par date
+// - la position actuelle de l'utilisateur
 async function fetchActivities() {
     await locationStore.fetchPosition();
     await activitiesStore.fetchActivities();
@@ -33,21 +32,23 @@ onMounted(() => {
         .catch(error => console.log(error));
 });
 
-// Insérer les activités triées par distance croissante et par date dans nearesActivities
+// Insérer les activités triées par distance croissante dans nearesActivities
 const nearesActivities = computed(
     () => activitiesStore.getActivitiesSortedByDistance
 );
+
 
 // Insérer les activités triées par date dans nextActivities
 const nextActivities = computed(
     () => activitiesStore.getActivitiesSortedByDate
 );
 
+
 </script>
 
 <template>
     <AppLayout title="Dashboard" class="bg-gradient-to-b from-teal to-cyan">
-        <!-- Navbar -->
+        <!-- Navigation -->
         <template #nav>
             <div class="mx-auto px-4">
                 <div class="flex justify-between ">
@@ -56,8 +57,6 @@ const nextActivities = computed(
                             <a :href="route('dashboard')">Together</a>
                         </h1>
                     </div>
-
-
                     <HamburgerMenu />
                 </div>
             </div>

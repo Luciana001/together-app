@@ -1,12 +1,12 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+    import { defineProps, defineEmits } from 'vue';
 
-const props = defineProps({
-    value: String,
-    type: String,
-})
+    const props = defineProps({
+        value: String,
+        type: String,
+    })
 
-const emits = defineEmits(['onClick'])
+    const emits = defineEmits(['onClick'])
 </script>
 
 <template>

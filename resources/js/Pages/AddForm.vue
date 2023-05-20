@@ -34,21 +34,10 @@ const activity = ref({
 });
 
 const submitForm = () => {
-    // const formData = new FormData();
-    // formData.append('image', activity.value.image);
-    // formData.append('title', activity.value.title);
-    // formData.append('date_activity', activity.value.date_activity);
-    // formData.append('hour', activity.value.hour);
-    // formData.append('duration', activity.value.duration);
-    // formData.append('adress', activity.value.adress);
-    // formData.append('localisation', activity.value.localisation);
-    // formData.append('description', activity.value.description);
-    // formData.append('nb_max_participants', activity.value.nb_max_participants);
-    // formData.append('pays', activity.value.pays);
-    // formData.append('category_id', activity.value.category_id);
     router.post('/activities', activity.value);
 }
 
+// construire le tableau activity avec les valeurs du formulaire
 const saveValueInput = (name, value) => {
     activity.value[name] = value;
 }
@@ -71,12 +60,14 @@ const saveValueInput = (name, value) => {
             <FormSection @submit.prevent="submitForm" enctype="multipart/form-data">
                 
                 <template #header>
+                    <!-- Input Image -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="file" label="Choisir une image" id="image"
                             name="image" />
                     </div>
                 </template>
                 <template #main>
+                    <!-- Input Titre -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="text" label="Titre de l'activité" id="title" />
                     </div>
@@ -97,29 +88,44 @@ const saveValueInput = (name, value) => {
                         </div>
                     </div> 
 
+                    <!-- Input date activité -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="date" label="Date de l'activité"
                             id="date_activity" />
                     </div>
+
+                    <!-- Input Heure activité -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="time" label="Heure de l'activité" id="hour" />
                     </div>
+
+                    <!-- Input durée -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="time" label="Durée de l'activité" id="duration" />
                     </div>
+
+                    <!-- Input participants -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="number" label="Nombre de participants"
                             id="nb_max_participants" />
                     </div>
+
+                    <!-- Input adresse -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="text" label="Adresse" id="adress" />
                     </div>
+
+                    <!-- Input localisation -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="text" label="Ville" id="localisation" />
                     </div>
+
+                    <!-- Input pays -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="text" label="Pays" id="pays" />
                     </div>
+
+                    <!-- Input description -->
                     <div class="m-8">
                         <InputLabel @inputValue="saveValueInput" type="textarea" label="Description de l'activité" rows="10"
                             id="description" />
@@ -128,8 +134,6 @@ const saveValueInput = (name, value) => {
                 <template #footer>
                     <div class="m-8">
                         <button type="submit" >Créer</button>
-                        <!-- <BtnPrimary :href="route('activites.store')" value="Creer"/> -->
-                        <!-- <BtnCreate type="submit" value="Creer"/> -->
                     </div>
                 </template>
             </FormSection>

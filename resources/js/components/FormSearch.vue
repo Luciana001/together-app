@@ -15,8 +15,8 @@ import LinkIcon from '../components/LinkIcon.vue'
 
             <!-- filter and map-->
             <div class="flex gap-4 m-6">
-                <LinkIcon :route="route('dashboard')" class="h-6 mt-1" icon="filter-filled-tool-symbol" />
-                <LinkIcon :route="route('dashboard')" class="h-6 mt-1" icon="carte" />
+                <LinkIcon  class="h-6 mt-1" src="filter-filled-tool-symbol.png" />
+                <LinkIcon  class="h-6 mt-1" src="carte.png" />
             </div>
         </div>
     </form>

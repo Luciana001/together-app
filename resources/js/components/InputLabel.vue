@@ -9,27 +9,14 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['inputValue']);
-// // $emit('inputValue', $event.target.value)
-
-
 
 // Récupérer la valeur et le name de l'input 
 const saveInputValue = (event) => {
     let nameInput = event.target.name;
     let value = event.target.value;
-    
-    
     emit('inputValue', nameInput, value)
-//     // value.value = event.target.value,
-//     // emitValue(event.target.name);
-// }
-
-//
-// const emitValue = (name) => {
-//     const payLoad = { name: name, value : value.value };
-//     emit('inputValue', payLoad)
 }
-
+// recuperer le fichier image
 const onFileChange = (event) => {
         const file = event.target.files[0];
         emit('inputValue', 'image', file);
@@ -38,7 +25,6 @@ const onFileChange = (event) => {
 </script>
 
 <template>
-    
         <label class="block font-medium text-sm text-gray-700" :for="props.id">
             <span v-if="label">{{ label }}</span>
             <span v-else><slot /></span>

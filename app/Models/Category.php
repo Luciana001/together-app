@@ -13,4 +13,8 @@ class Category extends Model
     // {
     //     return $this->belongsToMany(User::class, 'users_has_categories', 'category_id', 'user_id');
     // }
+
+    public function activities() {
+        return $this->hasMany(Activity::class);
+    }
 }

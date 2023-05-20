@@ -28,4 +28,4 @@ Route::get('/categories', [CategoriesController::class, 'index'])->name('categor
 
 //Route::resource('/activities', ActivitiesController::class);
 
-Route::post('/activities', [ActivitiesController::class, 'store'])->name('activities.store');
+//Route::post('/activities', [ActivitiesController::class, 'store'])->name('activities.store');

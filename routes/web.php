@@ -37,7 +37,7 @@ Route::middleware([
     Route::get('/dashboard', function(){
         return Inertia::render('Dashboard');
     })->name('dashboard');
-    //Route::get('/dashboard', [ActivitiesController::class, 'getActivitiesWithDistance'])->name('dashboard');
+    // Route::inertia('/dashboard', 'dashboard');
 
     // CRUD pour les activités
     Route::resource('/activities', ActivitiesController::class);

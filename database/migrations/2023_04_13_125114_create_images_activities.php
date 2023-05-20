@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('images_activities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('activity_id');
-            $table->foreign('activity_id')->references('id')->on('activities');
+            $table->foreignId('activity_id')->constrained('activities');
             $table->timestamps();
         });
     }

@@ -1,0 +1,1 @@
+import{o as t,d as e,t as n,n as c}from"./app-5e210827.js";const i={name:"TitleSection",props:{class:String,value:String},setup(s){const a=s;return(o,r)=>(t(),e("h2",{class:c(s.class)},n(a.value),3))}};export{i as _};

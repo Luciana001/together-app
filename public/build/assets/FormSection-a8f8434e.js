@@ -1,0 +1,1 @@
+import{o as r,d as s,h as t}from"./app-5e210827.js";const c=["enctype","method","action"],m={name:"FormSection",props:{action:String,method:String,enctype:String},setup(n){const e=n;return(o,a)=>(r(),s("form",{enctype:e.enctype,method:e.method,action:e.action},[t(o.$slots,"header"),t(o.$slots,"main"),t(o.$slots,"footer")],8,c))}};export{m as _};
